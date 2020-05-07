@@ -31,6 +31,9 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.newGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startNewGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.algorithmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miniMaxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.randomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button0 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -41,17 +44,12 @@
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
-            this.turn_label = new System.Windows.Forms.Label();
-            this.current_player = new System.Windows.Forms.Label();
             this.ai_win_label = new System.Windows.Forms.Label();
             this.player_win_label = new System.Windows.Forms.Label();
             this.draw_label = new System.Windows.Forms.Label();
             this.ai_win_num = new System.Windows.Forms.Label();
             this.player_win_num = new System.Windows.Forms.Label();
             this.draw_num = new System.Windows.Forms.Label();
-            this.algorithmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.miniMaxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.randomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.algorithm_val = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
@@ -68,7 +66,7 @@
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(632, 36);
+            this.menuStrip1.Size = new System.Drawing.Size(632, 33);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -77,20 +75,43 @@
             this.newGameToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.startNewGameToolStripMenuItem});
             this.newGameToolStripMenuItem.Name = "newGameToolStripMenuItem";
-            this.newGameToolStripMenuItem.Size = new System.Drawing.Size(54, 32);
+            this.newGameToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
             this.newGameToolStripMenuItem.Text = "File";
             // 
             // startNewGameToolStripMenuItem
             // 
             this.startNewGameToolStripMenuItem.Name = "startNewGameToolStripMenuItem";
-            this.startNewGameToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.startNewGameToolStripMenuItem.Size = new System.Drawing.Size(241, 34);
             this.startNewGameToolStripMenuItem.Text = "Start New Game";
             this.startNewGameToolStripMenuItem.Click += new System.EventHandler(this.newGameToolStripMenuItem_Click);
+            // 
+            // algorithmToolStripMenuItem
+            // 
+            this.algorithmToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miniMaxToolStripMenuItem,
+            this.randomToolStripMenuItem});
+            this.algorithmToolStripMenuItem.Name = "algorithmToolStripMenuItem";
+            this.algorithmToolStripMenuItem.Size = new System.Drawing.Size(108, 29);
+            this.algorithmToolStripMenuItem.Text = "Algorithm";
+            // 
+            // miniMaxToolStripMenuItem
+            // 
+            this.miniMaxToolStripMenuItem.Name = "miniMaxToolStripMenuItem";
+            this.miniMaxToolStripMenuItem.Size = new System.Drawing.Size(251, 34);
+            this.miniMaxToolStripMenuItem.Text = "MiniMax (default)";
+            this.miniMaxToolStripMenuItem.Click += new System.EventHandler(this.changeAlgorithm);
+            // 
+            // randomToolStripMenuItem
+            // 
+            this.randomToolStripMenuItem.Name = "randomToolStripMenuItem";
+            this.randomToolStripMenuItem.Size = new System.Drawing.Size(251, 34);
+            this.randomToolStripMenuItem.Text = "Random";
+            this.randomToolStripMenuItem.Click += new System.EventHandler(this.changeAlgorithm);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(78, 32);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(78, 29);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -103,7 +124,7 @@
             this.button0.Size = new System.Drawing.Size(144, 144);
             this.button0.TabIndex = 1;
             this.button0.UseVisualStyleBackColor = false;
-            this.button0.Click += new System.EventHandler(this.button_click);
+            this.button0.Click += new System.EventHandler(this.Player_Turn);
             // 
             // button1
             // 
@@ -114,7 +135,7 @@
             this.button1.Size = new System.Drawing.Size(144, 144);
             this.button1.TabIndex = 2;
             this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button_click);
+            this.button1.Click += new System.EventHandler(this.Player_Turn);
             // 
             // button2
             // 
@@ -125,7 +146,7 @@
             this.button2.Size = new System.Drawing.Size(144, 144);
             this.button2.TabIndex = 3;
             this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button_click);
+            this.button2.Click += new System.EventHandler(this.Player_Turn);
             // 
             // button3
             // 
@@ -136,7 +157,7 @@
             this.button3.Size = new System.Drawing.Size(144, 144);
             this.button3.TabIndex = 4;
             this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.button_click);
+            this.button3.Click += new System.EventHandler(this.Player_Turn);
             // 
             // button4
             // 
@@ -147,7 +168,7 @@
             this.button4.Size = new System.Drawing.Size(144, 144);
             this.button4.TabIndex = 5;
             this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.button_click);
+            this.button4.Click += new System.EventHandler(this.Player_Turn);
             // 
             // button5
             // 
@@ -158,7 +179,7 @@
             this.button5.Size = new System.Drawing.Size(144, 144);
             this.button5.TabIndex = 6;
             this.button5.UseVisualStyleBackColor = false;
-            this.button5.Click += new System.EventHandler(this.button_click);
+            this.button5.Click += new System.EventHandler(this.Player_Turn);
             // 
             // button6
             // 
@@ -169,7 +190,7 @@
             this.button6.Size = new System.Drawing.Size(144, 144);
             this.button6.TabIndex = 7;
             this.button6.UseVisualStyleBackColor = false;
-            this.button6.Click += new System.EventHandler(this.button_click);
+            this.button6.Click += new System.EventHandler(this.Player_Turn);
             // 
             // button7
             // 
@@ -180,7 +201,7 @@
             this.button7.Size = new System.Drawing.Size(144, 144);
             this.button7.TabIndex = 8;
             this.button7.UseVisualStyleBackColor = false;
-            this.button7.Click += new System.EventHandler(this.button_click);
+            this.button7.Click += new System.EventHandler(this.Player_Turn);
             // 
             // button8
             // 
@@ -191,34 +212,13 @@
             this.button8.Size = new System.Drawing.Size(144, 144);
             this.button8.TabIndex = 9;
             this.button8.UseVisualStyleBackColor = false;
-            this.button8.Click += new System.EventHandler(this.button_click);
-            // 
-            // turn_label
-            // 
-            this.turn_label.AutoSize = true;
-            this.turn_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.turn_label.Location = new System.Drawing.Point(462, 39);
-            this.turn_label.Name = "turn_label";
-            this.turn_label.Size = new System.Drawing.Size(145, 26);
-            this.turn_label.TabIndex = 10;
-            this.turn_label.Text = "Current Turn";
-            // 
-            // current_player
-            // 
-            this.current_player.AutoSize = true;
-            this.current_player.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.current_player.Location = new System.Drawing.Point(462, 70);
-            this.current_player.Name = "current_player";
-            this.current_player.Size = new System.Drawing.Size(136, 26);
-            this.current_player.TabIndex = 11;
-            this.current_player.Text = "     Player   ";
-            this.current_player.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.button8.Click += new System.EventHandler(this.Player_Turn);
             // 
             // ai_win_label
             // 
             this.ai_win_label.AutoSize = true;
             this.ai_win_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ai_win_label.Location = new System.Drawing.Point(462, 189);
+            this.ai_win_label.Location = new System.Drawing.Point(462, 177);
             this.ai_win_label.Name = "ai_win_label";
             this.ai_win_label.Size = new System.Drawing.Size(102, 26);
             this.ai_win_label.TabIndex = 12;
@@ -228,7 +228,7 @@
             // 
             this.player_win_label.AutoSize = true;
             this.player_win_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.player_win_label.Location = new System.Drawing.Point(462, 246);
+            this.player_win_label.Location = new System.Drawing.Point(462, 302);
             this.player_win_label.Name = "player_win_label";
             this.player_win_label.Size = new System.Drawing.Size(140, 26);
             this.player_win_label.TabIndex = 13;
@@ -238,7 +238,7 @@
             // 
             this.draw_label.AutoSize = true;
             this.draw_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.draw_label.Location = new System.Drawing.Point(462, 307);
+            this.draw_label.Location = new System.Drawing.Point(462, 419);
             this.draw_label.Name = "draw_label";
             this.draw_label.Size = new System.Drawing.Size(79, 26);
             this.draw_label.TabIndex = 14;
@@ -248,7 +248,7 @@
             // 
             this.ai_win_num.AutoSize = true;
             this.ai_win_num.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ai_win_num.Location = new System.Drawing.Point(462, 218);
+            this.ai_win_num.Location = new System.Drawing.Point(462, 206);
             this.ai_win_num.Name = "ai_win_num";
             this.ai_win_num.Size = new System.Drawing.Size(25, 26);
             this.ai_win_num.TabIndex = 15;
@@ -259,7 +259,7 @@
             // 
             this.player_win_num.AutoSize = true;
             this.player_win_num.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.player_win_num.Location = new System.Drawing.Point(462, 277);
+            this.player_win_num.Location = new System.Drawing.Point(462, 333);
             this.player_win_num.Name = "player_win_num";
             this.player_win_num.Size = new System.Drawing.Size(25, 26);
             this.player_win_num.TabIndex = 16;
@@ -270,41 +270,18 @@
             // 
             this.draw_num.AutoSize = true;
             this.draw_num.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.draw_num.Location = new System.Drawing.Point(462, 337);
+            this.draw_num.Location = new System.Drawing.Point(462, 449);
             this.draw_num.Name = "draw_num";
             this.draw_num.Size = new System.Drawing.Size(25, 26);
             this.draw_num.TabIndex = 17;
             this.draw_num.Text = "0";
             this.draw_num.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // algorithmToolStripMenuItem
-            // 
-            this.algorithmToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.miniMaxToolStripMenuItem,
-            this.randomToolStripMenuItem});
-            this.algorithmToolStripMenuItem.Name = "algorithmToolStripMenuItem";
-            this.algorithmToolStripMenuItem.Size = new System.Drawing.Size(108, 32);
-            this.algorithmToolStripMenuItem.Text = "Algorithm";
-            // 
-            // miniMaxToolStripMenuItem
-            // 
-            this.miniMaxToolStripMenuItem.Name = "miniMaxToolStripMenuItem";
-            this.miniMaxToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.miniMaxToolStripMenuItem.Text = "MiniMax (default)";
-            this.miniMaxToolStripMenuItem.Click += new System.EventHandler(this.changeAlgorithm);
-            // 
-            // randomToolStripMenuItem
-            // 
-            this.randomToolStripMenuItem.Name = "randomToolStripMenuItem";
-            this.randomToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.randomToolStripMenuItem.Text = "Random";
-            this.randomToolStripMenuItem.Click += new System.EventHandler(this.changeAlgorithm);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(457, 374);
+            this.label1.Location = new System.Drawing.Point(462, 39);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(114, 52);
             this.label1.TabIndex = 18;
@@ -314,7 +291,7 @@
             // 
             this.algorithm_val.AutoSize = true;
             this.algorithm_val.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.algorithm_val.Location = new System.Drawing.Point(462, 432);
+            this.algorithm_val.Location = new System.Drawing.Point(467, 97);
             this.algorithm_val.Name = "algorithm_val";
             this.algorithm_val.Size = new System.Drawing.Size(0, 26);
             this.algorithm_val.TabIndex = 19;
@@ -333,8 +310,6 @@
             this.Controls.Add(this.draw_label);
             this.Controls.Add(this.player_win_label);
             this.Controls.Add(this.ai_win_label);
-            this.Controls.Add(this.current_player);
-            this.Controls.Add(this.turn_label);
             this.Controls.Add(this.button8);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
@@ -372,8 +347,6 @@
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Label turn_label;
-        private System.Windows.Forms.Label current_player;
         private System.Windows.Forms.Label ai_win_label;
         private System.Windows.Forms.Label player_win_label;
         private System.Windows.Forms.Label draw_label;

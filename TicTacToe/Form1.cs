@@ -15,8 +15,7 @@ namespace TicTacToe
     public partial class Form1 : Form
     {
         // 0 = blank, -1 = player, 1 = AI
-        int[] boardState = new int[] { 0, 0, 0, 0, 0, 0, 0, 0,0};
-        bool PlayerTurn = true;
+        int[] BoardState = new int[] { 0, 0, 0, 0, 0, 0, 0, 0,0};
         int turn_count = 0;
         string algorithm = "MiniMax";
         
@@ -31,47 +30,14 @@ namespace TicTacToe
 
         }
 
-        private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ResetGame();
-        }
-
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Created by: Brennan Coslett\nmatrikelNum: k11944223\nFor JKU C#", "About");
-        }
-
-        private void updatePlayerTurn(string IsPlayerTurn = null, bool resetTurn = false)
-        {
-            if (IsPlayerTurn == null)
-            {
-                PlayerTurn = !PlayerTurn;
-            }else if (IsPlayerTurn == "Player")
-            {
-                PlayerTurn = true;
-            }else 
-            {
-                PlayerTurn = false;
-            }
-                
-            if (resetTurn) { PlayerTurn = true; }
-            if (PlayerTurn)
-            {
-                current_player.Text = "     Player   ";
-            }
-            else
-            {
-                current_player.Text = "        AI      ";
-            }
-            turn_count++;
-        }
-        private void button_click(object sender, EventArgs e)
+        private void Player_Turn(object sender, EventArgs e)
         {
             Button button = (Button)sender;
             button.Text = "X";
             button.Enabled = false;
-            boardState[Int32.Parse(button.Name.Substring(6))] = -1;
-            if (!checkForWinner())// also updates turn labels and if winner resets board
+            BoardState[Int32.Parse(button.Name.Substring(6))] = -1;
+            turn_count++;
+            if (!checkForWinner(BoardState))// also updates turn labels and if winner resets board
             {
                 AI_Turn();
             }
@@ -81,22 +47,49 @@ namespace TicTacToe
         {
             Button[] ListOfButtons = new Button[] { button0, button1, button2, 
                 button3, button4, button5, button6, button7, button8 };
-            int[] currentBoardState = boardState;
+            int[] currentBoardState = BoardState;
             bool useMiniMax = (algorithm == "MiniMax");
+            int moveIndex = -1;
             if (useMiniMax)
             {
-
-            }else
+                moveIndex = calcMiniMax(currentBoardState);
+            } else
             {
-                int moveIndex = randomNextMoveIndex(currentBoardState);
-                boardState[moveIndex] = 1;
+                moveIndex = randomNextMoveIndex(currentBoardState);
+            }
+            if (moveIndex != -1)
+            {
+                BoardState[moveIndex] = 1;
                 ListOfButtons[moveIndex].Text = "O";
                 ListOfButtons[moveIndex].Enabled = false;
-                checkForWinner();
+                turn_count++;
             }
-
+            checkForWinner(BoardState);
         }
 
+        private int calcMiniMax(int[] boardState)
+        {
+            int[] currentState = boardState;
+            List<int> ValidMoves = new List<int>();
+            int move = -1;
+            for (int i = 0; i < currentState.Length; i++)
+            {
+                if (currentState[i] == 0) { ValidMoves.Add(i); }
+            }
+            for (int i = 0; i < ValidMoves.Count; i++)
+            {
+                if (ValidMoves[i] ==1) 
+                {
+                    currentState[i] = 1;
+                    if (isStateWinner(currentState)) 
+                    {
+                        move = i;                    
+                    }
+                }
+            }
+
+            return move;
+        }
         private int randomNextMoveIndex(int[] boardState)
         {
             int[] currentState= boardState;
@@ -109,40 +102,58 @@ namespace TicTacToe
              if (currentState[i] == 0) { ValidMoves.Add(i); }   
             }
             int index = rnd.Next(ValidMoves.Count);
-            move = ValidMoves[index];
-            return move;
-        }
-        private void ResetGame(bool algorithmChange = false)
-        {
-            foreach (Control c in Controls)
+            if (ValidMoves.Count != 0)
             {
-                try
-                {
-                    Button b = (Button)c;
-                    b.Enabled = true;
-                    b.Text = "";
-                }
-                catch { }
-            }
-            
-            turn_count = 0;
-            Array.Clear(boardState, 0, boardState.Length);
-            if (algorithmChange)
-            {
-                updatePlayerTurn(null, true);
-                player_win_num.Text = "0";
-                ai_win_num.Text = "0";
-                draw_num.Text = "0";
-                MessageBox.Show("All Values Reset", "Algorithm Changed");
+                move = ValidMoves[index];
+                return move;
             }
             else
             {
-                updatePlayerTurn("Player");
+                return -1;
             }
         }
-
-        private bool checkForWinner()
+        private bool isStateWinner(int[] board)
         {
+            int[] boardState = board;
+            if (boardState[0] == boardState[1] && boardState[1] == boardState[2] && !button0.Enabled)//horizontal WinCons
+            {
+                return true;
+            }
+            else if (boardState[3] == boardState[4] && boardState[4] == boardState[5] && !button3.Enabled)
+            {
+                return true;
+            }
+            else if (boardState[6] == boardState[7] && boardState[7] == boardState[8] && !button6.Enabled)
+            {
+                return true;
+            }
+            else if (boardState[0] == boardState[3] && boardState[3] == boardState[6] && !button0.Enabled) //vert WinCons
+            {
+                return true;
+            }
+            else if (boardState[1] == boardState[4] && boardState[4] == boardState[7] && !button1.Enabled)
+            {
+                return true;
+            }
+            else if (boardState[2] == boardState[5] && boardState[5] == boardState[8] && !button2.Enabled)
+            {
+                return true;
+            }
+            else if (boardState[0] == boardState[4] && boardState[4] == boardState[8] && !button0.Enabled) //diag WinCons
+            {
+                return true;
+            }
+            else if (boardState[2] == boardState[4] && boardState[4] == boardState[6] && !button2.Enabled)
+            {
+                return true;
+            }
+            return false;
+
+        }
+
+        private bool checkForWinner(int[] board)
+        {
+            int[] boardState = board;
             int winner = 0;
             if (boardState[0] == boardState[1] && boardState[1] == boardState[2] && !button0.Enabled)//horizontal WinCons
             {
@@ -208,18 +219,32 @@ namespace TicTacToe
                 }
                 ResetGame();
                 return true;
-            }else
-            {
-                if (PlayerTurn)
-                {
-                    updatePlayerTurn("AI");
-                }
-                else 
-                {
-                    updatePlayerTurn("Player");
-                }
             }
             return false;
+        }
+
+        private void ResetGame(bool algorithmChange = false)
+        {
+            foreach (Control c in Controls)
+            {
+                try
+                {
+                    Button b = (Button)c;
+                    b.Enabled = true;
+                    b.Text = "";
+                }
+                catch { }
+            }
+
+            turn_count = 0;
+            Array.Clear(BoardState, 0, BoardState.Length);
+            if (algorithmChange)
+            {
+                player_win_num.Text = "0";
+                ai_win_num.Text = "0";
+                draw_num.Text = "0";
+                MessageBox.Show("All Values Reset", "Algorithm Changed");
+            }
         }
 
         private void changeAlgorithm(object sender, EventArgs e)
@@ -238,5 +263,16 @@ namespace TicTacToe
             algorithm_val.Text = algorithm;
             ResetGame(true);
         }
+
+        private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ResetGame();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Created by: Brennan Coslett\nmatrikelNum: k11944223\nFor JKU C#", "About");
+        }
+
     }
 }
