@@ -49,6 +49,11 @@
             this.ai_win_num = new System.Windows.Forms.Label();
             this.player_win_num = new System.Windows.Forms.Label();
             this.draw_num = new System.Windows.Forms.Label();
+            this.algorithmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miniMaxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.randomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label1 = new System.Windows.Forms.Label();
+            this.algorithm_val = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,6 +64,7 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newGameToolStripMenuItem,
+            this.algorithmToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -73,13 +79,13 @@
             this.newGameToolStripMenuItem.Name = "newGameToolStripMenuItem";
             this.newGameToolStripMenuItem.Size = new System.Drawing.Size(54, 32);
             this.newGameToolStripMenuItem.Text = "File";
-            this.newGameToolStripMenuItem.Click += new System.EventHandler(this.newGameToolStripMenuItem_Click);
             // 
             // startNewGameToolStripMenuItem
             // 
             this.startNewGameToolStripMenuItem.Name = "startNewGameToolStripMenuItem";
-            this.startNewGameToolStripMenuItem.Size = new System.Drawing.Size(241, 34);
+            this.startNewGameToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.startNewGameToolStripMenuItem.Text = "Start New Game";
+            this.startNewGameToolStripMenuItem.Click += new System.EventHandler(this.newGameToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -201,7 +207,7 @@
             // 
             this.current_player.AutoSize = true;
             this.current_player.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.current_player.Location = new System.Drawing.Point(462, 65);
+            this.current_player.Location = new System.Drawing.Point(462, 70);
             this.current_player.Name = "current_player";
             this.current_player.Size = new System.Drawing.Size(136, 26);
             this.current_player.TabIndex = 11;
@@ -242,7 +248,7 @@
             // 
             this.ai_win_num.AutoSize = true;
             this.ai_win_num.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ai_win_num.Location = new System.Drawing.Point(462, 215);
+            this.ai_win_num.Location = new System.Drawing.Point(462, 218);
             this.ai_win_num.Name = "ai_win_num";
             this.ai_win_num.Size = new System.Drawing.Size(25, 26);
             this.ai_win_num.TabIndex = 15;
@@ -253,7 +259,7 @@
             // 
             this.player_win_num.AutoSize = true;
             this.player_win_num.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.player_win_num.Location = new System.Drawing.Point(462, 281);
+            this.player_win_num.Location = new System.Drawing.Point(462, 277);
             this.player_win_num.Name = "player_win_num";
             this.player_win_num.Size = new System.Drawing.Size(25, 26);
             this.player_win_num.TabIndex = 16;
@@ -264,12 +270,54 @@
             // 
             this.draw_num.AutoSize = true;
             this.draw_num.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.draw_num.Location = new System.Drawing.Point(462, 339);
+            this.draw_num.Location = new System.Drawing.Point(462, 337);
             this.draw_num.Name = "draw_num";
             this.draw_num.Size = new System.Drawing.Size(25, 26);
             this.draw_num.TabIndex = 17;
             this.draw_num.Text = "0";
             this.draw_num.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // algorithmToolStripMenuItem
+            // 
+            this.algorithmToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miniMaxToolStripMenuItem,
+            this.randomToolStripMenuItem});
+            this.algorithmToolStripMenuItem.Name = "algorithmToolStripMenuItem";
+            this.algorithmToolStripMenuItem.Size = new System.Drawing.Size(108, 32);
+            this.algorithmToolStripMenuItem.Text = "Algorithm";
+            // 
+            // miniMaxToolStripMenuItem
+            // 
+            this.miniMaxToolStripMenuItem.Name = "miniMaxToolStripMenuItem";
+            this.miniMaxToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.miniMaxToolStripMenuItem.Text = "MiniMax (default)";
+            this.miniMaxToolStripMenuItem.Click += new System.EventHandler(this.changeAlgorithm);
+            // 
+            // randomToolStripMenuItem
+            // 
+            this.randomToolStripMenuItem.Name = "randomToolStripMenuItem";
+            this.randomToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.randomToolStripMenuItem.Text = "Random";
+            this.randomToolStripMenuItem.Click += new System.EventHandler(this.changeAlgorithm);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(457, 374);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(114, 52);
+            this.label1.TabIndex = 18;
+            this.label1.Text = "Current\r\nAlgorithm\r\n";
+            // 
+            // algorithm_val
+            // 
+            this.algorithm_val.AutoSize = true;
+            this.algorithm_val.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.algorithm_val.Location = new System.Drawing.Point(462, 432);
+            this.algorithm_val.Name = "algorithm_val";
+            this.algorithm_val.Size = new System.Drawing.Size(0, 26);
+            this.algorithm_val.TabIndex = 19;
             // 
             // Form1
             // 
@@ -277,6 +325,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(632, 497);
+            this.Controls.Add(this.algorithm_val);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.draw_num);
             this.Controls.Add(this.player_win_num);
             this.Controls.Add(this.ai_win_num);
@@ -330,6 +380,11 @@
         private System.Windows.Forms.Label ai_win_num;
         private System.Windows.Forms.Label player_win_num;
         private System.Windows.Forms.Label draw_num;
+        private System.Windows.Forms.ToolStripMenuItem algorithmToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem miniMaxToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem randomToolStripMenuItem;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label algorithm_val;
     }
 }
 
