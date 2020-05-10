@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.newGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startNewGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,7 +67,7 @@
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(632, 33);
+            this.menuStrip1.Size = new System.Drawing.Size(632, 36);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -75,7 +76,7 @@
             this.newGameToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.startNewGameToolStripMenuItem});
             this.newGameToolStripMenuItem.Name = "newGameToolStripMenuItem";
-            this.newGameToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
+            this.newGameToolStripMenuItem.Size = new System.Drawing.Size(54, 32);
             this.newGameToolStripMenuItem.Text = "File";
             // 
             // startNewGameToolStripMenuItem
@@ -91,7 +92,7 @@
             this.miniMaxToolStripMenuItem,
             this.randomToolStripMenuItem});
             this.algorithmToolStripMenuItem.Name = "algorithmToolStripMenuItem";
-            this.algorithmToolStripMenuItem.Size = new System.Drawing.Size(108, 29);
+            this.algorithmToolStripMenuItem.Size = new System.Drawing.Size(108, 32);
             this.algorithmToolStripMenuItem.Text = "Algorithm";
             // 
             // miniMaxToolStripMenuItem
@@ -111,7 +112,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(78, 29);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(78, 32);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -320,9 +321,9 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button0);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.ShowIcon = false;
             this.Text = "Tic Tac Toe";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
