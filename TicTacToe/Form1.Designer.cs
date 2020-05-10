@@ -50,8 +50,8 @@
             this.ai_win_num = new System.Windows.Forms.Label();
             this.player_win_num = new System.Windows.Forms.Label();
             this.draw_num = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.algorithm_val = new System.Windows.Forms.Label();
+            this.Algorithm_label = new System.Windows.Forms.Label();
+            this.Algorithm_Val = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -277,24 +277,24 @@
             this.draw_num.Text = "0";
             this.draw_num.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label1
+            // Algorithm_label
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(462, 39);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(114, 52);
-            this.label1.TabIndex = 18;
-            this.label1.Text = "Current\r\nAlgorithm\r\n";
+            this.Algorithm_label.AutoSize = true;
+            this.Algorithm_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Algorithm_label.Location = new System.Drawing.Point(462, 39);
+            this.Algorithm_label.Name = "Algorithm_label";
+            this.Algorithm_label.Size = new System.Drawing.Size(114, 52);
+            this.Algorithm_label.TabIndex = 18;
+            this.Algorithm_label.Text = "Current\r\nAlgorithm\r\n";
             // 
-            // algorithm_val
+            // Algorithm_Val
             // 
-            this.algorithm_val.AutoSize = true;
-            this.algorithm_val.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.algorithm_val.Location = new System.Drawing.Point(467, 97);
-            this.algorithm_val.Name = "algorithm_val";
-            this.algorithm_val.Size = new System.Drawing.Size(0, 26);
-            this.algorithm_val.TabIndex = 19;
+            this.Algorithm_Val.AutoSize = true;
+            this.Algorithm_Val.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Algorithm_Val.Location = new System.Drawing.Point(467, 97);
+            this.Algorithm_Val.Name = "Algorithm_Val";
+            this.Algorithm_Val.Size = new System.Drawing.Size(0, 26);
+            this.Algorithm_Val.TabIndex = 19;
             // 
             // Form1
             // 
@@ -302,8 +302,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(632, 497);
-            this.Controls.Add(this.algorithm_val);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.Algorithm_Val);
+            this.Controls.Add(this.Algorithm_label);
             this.Controls.Add(this.draw_num);
             this.Controls.Add(this.player_win_num);
             this.Controls.Add(this.ai_win_num);
@@ -356,8 +356,8 @@
         private System.Windows.Forms.ToolStripMenuItem algorithmToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem miniMaxToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem randomToolStripMenuItem;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label algorithm_val;
+        private System.Windows.Forms.Label Algorithm_label;
+        private System.Windows.Forms.Label Algorithm_Val;
     }
 }
 

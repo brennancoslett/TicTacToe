@@ -15,14 +15,16 @@ namespace TicTacToe
     public partial class Form1 : Form
     {
         // 0 = blank, -1 = player, 1 = AI
-        int[] BoardState = new int[] { 0, 0, 0, 0, 0, 0, 0, 0,0};
-        int turn_count = 0;
-        string algorithm = "MiniMax";
-        
+        int[] BoardState = new int[9];
+        static readonly int[,] WinConditions = new int[8,3] {{0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}};
+        int Turn_Count = 0;
+        string Algorithm = "Minimax";
+        bool AIFirstTurn = true;
+
         public Form1()
         {
             InitializeComponent();
-            algorithm_val.Text = algorithm;
+            Algorithm_Val.Text = Algorithm;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -36,159 +38,183 @@ namespace TicTacToe
             button.Text = "X";
             button.Enabled = false;
             BoardState[Int32.Parse(button.Name.Substring(6))] = -1;
-            turn_count++;
-            if (!checkForWinner(BoardState))// also updates turn labels and if winner resets board
+            Turn_Count++;
+            if (!GameFinished(BoardState))// also updates turn labels and if Winner resets board
             {
-                AI_Turn();
+                AI_Turn(BoardState);
             }
         }
 
-        private void AI_Turn()
+        private void AI_Turn(int[] boardState)
         {
-            Button[] ListOfButtons = new Button[] { button0, button1, button2, 
+            int[] CurrentBoardState = new int[9];
+            for(int i = 0; i < CurrentBoardState.Length; i++)
+            {
+                CurrentBoardState[i] = boardState[i];
+            }
+            Button[] ListOfButtons = new Button[] { button0, button1, button2,
                 button3, button4, button5, button6, button7, button8 };
-            int[] currentBoardState = BoardState;
-            bool useMiniMax = (algorithm == "MiniMax");
-            int moveIndex = -1;
-            if (useMiniMax)
+            bool UseMinimax = Algorithm == "Minimax";
+            int MoveIndex = -1;
+            if (UseMinimax)
             {
-                moveIndex = calcMiniMax(currentBoardState);
-            } else
-            {
-                moveIndex = randomNextMoveIndex(currentBoardState);
-            }
-            if (moveIndex != -1)
-            {
-                BoardState[moveIndex] = 1;
-                ListOfButtons[moveIndex].Text = "O";
-                ListOfButtons[moveIndex].Enabled = false;
-                turn_count++;
-            }
-            checkForWinner(BoardState);
-        }
-
-        private int calcMiniMax(int[] boardState)
-        {
-            int[] currentState = boardState;
-            List<int> ValidMoves = new List<int>();
-            int move = -1;
-            for (int i = 0; i < currentState.Length; i++)
-            {
-                if (currentState[i] == 0) { ValidMoves.Add(i); }
-            }
-            for (int i = 0; i < ValidMoves.Count; i++)
-            {
-                if (ValidMoves[i] ==1) 
+                if (AIFirstTurn)
                 {
-                    currentState[i] = 1;
-                    if (isStateWinner(currentState)) 
+                    MoveIndex = randomNextMoveIndex(boardState);
+                    AIFirstTurn = false;
+                }
+                else if (TwoOfThree(CurrentBoardState) != -1)
+                {
+                    MoveIndex = TwoOfThree(CurrentBoardState);
+                }
+                else
+                {
+
+                    float OptimalScore = float.MinValue;
+                    float Score;
+                    for (int i = 0; i < 9; i++)
                     {
-                        move = i;                    
+                        if (CurrentBoardState[i] == 0)
+                        {
+                            CurrentBoardState[i] = 1;
+                            Score = Minimax(CurrentBoardState, 0, false);
+                            CurrentBoardState[i] = 0;
+                            if (Score > OptimalScore)
+                            {
+                                OptimalScore = Score;
+                                MoveIndex = i;
+                            }
+                        }
                     }
                 }
             }
-
-            return move;
-        }
-        private int randomNextMoveIndex(int[] boardState)
-        {
-            int[] currentState= boardState;
-
-            Random rnd = new Random();
-            List<int> ValidMoves = new List<int>();
-            int move = -1;
-            for(int i = 0; i < currentState.Length; i++)
+            else
             {
-             if (currentState[i] == 0) { ValidMoves.Add(i); }   
+                MoveIndex = randomNextMoveIndex(boardState);
             }
-            int index = rnd.Next(ValidMoves.Count);
-            if (ValidMoves.Count != 0)
+            UpdateAISpace(MoveIndex, ListOfButtons);
+            GameFinished(boardState);
+        }
+
+        private void UpdateAISpace(int MoveIndex, Button[] ListOfButtons)
+        {
+            BoardState[MoveIndex] = 1;
+            ListOfButtons[MoveIndex].Text = "O";
+            ListOfButtons[MoveIndex].Enabled = false;
+            Turn_Count++;
+        }
+        private float Minimax(int[] boardState, int depth, bool isMaxing)
+        {
+            int result = CheckWinState(boardState).Item1;
+            if (result != 0)
             {
-                move = ValidMoves[index];
-                return move;
+                return depth == 0 ? result : result / depth;
+            }
+            if (isMaxing)
+            {
+                float OptimalScore = float.MinValue;
+                for (int i = 0; i < 9; i++)
+                {
+                    if (boardState[i] == 0)
+                    {
+                        boardState[i] = 1;
+                        float Score = Minimax(boardState, depth + 1, false);
+                        boardState[i] = 0;
+                        OptimalScore = Math.Max(Score, OptimalScore);
+                    }
+                }
+                return OptimalScore;
             }
             else
             {
-                return -1;
+                float OptimalScore = float.MaxValue;
+                for (int i = 0; i < 9; i++)
+                {
+                    if (boardState[i] == 0)
+                    {
+                        boardState[i] = -1;
+                        float Score = Minimax(boardState, depth + 1, true);
+                        boardState[i] = 0;
+                        OptimalScore = Math.Min(Score, OptimalScore);
+                    }
+                }
+                return OptimalScore;
             }
         }
-        private bool isStateWinner(int[] board)
-        {
-            int[] boardState = board;
-            if (boardState[0] == boardState[1] && boardState[1] == boardState[2] && !button0.Enabled)//horizontal WinCons
-            {
-                return true;
-            }
-            else if (boardState[3] == boardState[4] && boardState[4] == boardState[5] && !button3.Enabled)
-            {
-                return true;
-            }
-            else if (boardState[6] == boardState[7] && boardState[7] == boardState[8] && !button6.Enabled)
-            {
-                return true;
-            }
-            else if (boardState[0] == boardState[3] && boardState[3] == boardState[6] && !button0.Enabled) //vert WinCons
-            {
-                return true;
-            }
-            else if (boardState[1] == boardState[4] && boardState[4] == boardState[7] && !button1.Enabled)
-            {
-                return true;
-            }
-            else if (boardState[2] == boardState[5] && boardState[5] == boardState[8] && !button2.Enabled)
-            {
-                return true;
-            }
-            else if (boardState[0] == boardState[4] && boardState[4] == boardState[8] && !button0.Enabled) //diag WinCons
-            {
-                return true;
-            }
-            else if (boardState[2] == boardState[4] && boardState[4] == boardState[6] && !button2.Enabled)
-            {
-                return true;
-            }
-            return false;
 
+        private int randomNextMoveIndex(int[] boardState)
+        {
+            Random rnd = new Random();
+            List<int> ValidMoves = new List<int>();
+            for (int i = 0; i < boardState.Length; i++)
+            {
+                if (boardState[i] == 0) { ValidMoves.Add(i); }
+            }
+            return ValidMoves.Count != 0 ? ValidMoves[rnd.Next(ValidMoves.Count)] : -1;
         }
 
-        private bool checkForWinner(int[] board)
+        private (int, bool) CheckWinState(int[] boardState)
         {
-            int[] boardState = board;
-            int winner = 0;
-            if (boardState[0] == boardState[1] && boardState[1] == boardState[2] && !button0.Enabled)//horizontal WinCons
+            var Winner = (Value: 0, ButtonState: false);
+            Button[] ListOfButtons = new Button[] { button0, button1, button2,
+                button3, button4, button5, button6, button7, button8 };
+            for (int i = 0; i < 8; i++)
             {
-                winner = boardState[0];
+                if (boardState[WinConditions[i, 0]] == boardState[WinConditions[i,1]] 
+                    && boardState[WinConditions[i,1]] == boardState[WinConditions[i,2]] && boardState[WinConditions[i, 2]] != 0)
+                {
+                    Winner.Value = boardState[WinConditions[i, 0]];
+                    if (!ListOfButtons[i].Enabled)
+                    {
+                        Winner.ButtonState = true;
+                    }
+                }
             }
-            else if (boardState[3] == boardState[4] && boardState[4] == boardState[5] && !button3.Enabled)
-            {
-                winner = boardState[3];
-            }
-            else if (boardState[6] == boardState[7] && boardState[7] == boardState[8] && !button6.Enabled)
-            {
-                winner = boardState[6];
-            }
-            else if (boardState[0] == boardState[3] && boardState[3] == boardState[6] && !button0.Enabled) //vert WinCons
-            {
-                winner = boardState[0];
-            }
-            else if (boardState[1] == boardState[4] && boardState[4] == boardState[7] && !button1.Enabled)
-            {
-                winner = boardState[1];
-            }
-            else if (boardState[2] == boardState[5] && boardState[5] == boardState[8] && !button2.Enabled)
-            {
-                winner = boardState[2];
-            }
-            else if (boardState[0] == boardState[4] && boardState[4] == boardState[8] && !button0.Enabled) //diag WinCons
-            {
-                winner = boardState[0];
-            }
-            else if (boardState[2] == boardState[4] && boardState[4] == boardState[6] && !button2.Enabled)
-            {
-                winner = boardState[2];
-            }
+            return Winner;
+        }
 
-            if (winner != 0)
+        private int TwoOfThree(int[] boardState)
+        {
+            int IndexOfZero = -1;
+            for (int i = 0; i < 8; i++)
+            {
+                if (boardState[WinConditions[i, 0]] == -1 &&  boardState[WinConditions[i, 1]] == -1 && boardState[WinConditions[i, 1]] != 0)
+                {
+                    for (int j = 0; i < 3; i++)
+                    {
+                        if (boardState[WinConditions[i, j]] == 0) { IndexOfZero = WinConditions[i, j]; }
+                    }
+                }
+                else if (boardState[WinConditions[i, 1]] == -1 && boardState[WinConditions[i, 2]] == -1 && boardState[WinConditions[i, 1]] != 0)
+                {
+                    for (int j = 0; i < 3; i++)
+                    {
+                        if (boardState[WinConditions[i, j]] == 0) { IndexOfZero = WinConditions[i, j]; }
+                    }
+                }
+                else if (boardState[WinConditions[i, 2]] == -1 && boardState[WinConditions[i, 0]] == -1 && boardState[WinConditions[i, 2]] != 0)
+                {
+                    for (int j = 0; i < 3; i++)
+                    {
+                        if (boardState[WinConditions[i, j]] == 0) { IndexOfZero = WinConditions[i, j]; }
+                    }
+                }
+                else if (boardState[WinConditions[i, 2]] == -1 && boardState[WinConditions[i, 0]] == -1 && boardState[WinConditions[i, 2]] != 0)
+                {
+                    for (int j = 0; i < 3; i++)
+                    {
+                        if (boardState[WinConditions[i, j]] == 0) { IndexOfZero = WinConditions[i, j]; }
+                    }
+                }
+            }
+            return IndexOfZero;
+        }
+
+        private bool GameFinished(int[] boardState)
+        {
+            var Winner = CheckWinState(boardState);
+
+            if (Winner.Item1 != 0 && Winner.Item2 == true)
             {
                 foreach (Control c in Controls)
                 {
@@ -199,31 +225,33 @@ namespace TicTacToe
                     }
                     catch { };
                 }
-                if (winner == 1)
+                if (Winner.Item1 == 1)
                 {
                     ai_win_num.Text = ((Int32.Parse(ai_win_num.Text) + 1).ToString());
                     MessageBox.Show("AI Wins!", "Winner");
 
                 }
-                else if (winner == -1)
+                else if (Winner.Item1 == -1)
                 {
                     player_win_num.Text = ((Int32.Parse(player_win_num.Text) + 1).ToString());
                     MessageBox.Show("Player Wins!", "Winner");
 
                 }
-                else if (turn_count == 9)
-                {
-                    draw_num.Text = ((Int32.Parse(draw_num.Text) + 1).ToString());
-                    MessageBox.Show("No Winner", "Draw");
-
-                }
                 ResetGame();
                 return true;
+            }
+            else if (Turn_Count == 9)
+            {
+                draw_num.Text = ((Int32.Parse(draw_num.Text) + 1).ToString());
+                MessageBox.Show("No Winner", "Draw");
+                ResetGame();
+                return true;
+
             }
             return false;
         }
 
-        private void ResetGame(bool algorithmChange = false)
+        private void ResetGame(bool AlgorithmChange = false)
         {
             foreach (Control c in Controls)
             {
@@ -235,10 +263,9 @@ namespace TicTacToe
                 }
                 catch { }
             }
-
-            turn_count = 0;
+            Turn_Count = 0;
             Array.Clear(BoardState, 0, BoardState.Length);
-            if (algorithmChange)
+            if (AlgorithmChange)
             {
                 player_win_num.Text = "0";
                 ai_win_num.Text = "0";
@@ -253,14 +280,14 @@ namespace TicTacToe
             string firstChar = m.Name.Substring(0, 1);
             if (firstChar == "m")
             {
-                algorithm = "MiniMax";
+                Algorithm = "Minimax";
 
             }
             else
             {
-                algorithm = "Random";
+                Algorithm = "Random";
             }
-            algorithm_val.Text = algorithm;
+            Algorithm_Val.Text = Algorithm;
             ResetGame(true);
         }
 
