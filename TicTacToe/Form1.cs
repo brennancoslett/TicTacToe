@@ -60,7 +60,7 @@ namespace TicTacToe
             {
                 if (AIFirstTurn)
                 {
-                    MoveIndex = randomNextMoveIndex(boardState);
+                    MoveIndex = RandomNextMoveIndex(boardState);
                     AIFirstTurn = false;
                 }
                 else if (TwoOfThree(CurrentBoardState) != -1)
@@ -90,7 +90,7 @@ namespace TicTacToe
             }
             else
             {
-                MoveIndex = randomNextMoveIndex(boardState);
+                MoveIndex = RandomNextMoveIndex(boardState);
             }
             UpdateAISpace(MoveIndex, ListOfButtons);
             GameFinished(boardState);
@@ -142,7 +142,7 @@ namespace TicTacToe
             }
         }
 
-        private int randomNextMoveIndex(int[] boardState)
+        private int RandomNextMoveIndex(int[] boardState)
         {
             Random rnd = new Random();
             List<int> ValidMoves = new List<int>();
@@ -300,6 +300,5 @@ namespace TicTacToe
         {
             MessageBox.Show("Created by: Brennan Coslett\nmatrikelNum: k11944223\nFor JKU C#", "About");
         }
-
     }
 }
