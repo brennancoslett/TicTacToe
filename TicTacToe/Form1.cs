@@ -17,6 +17,7 @@ namespace TicTacToe
         // 0 = blank, -1 = player, 1 = AI
         int[] BoardState = new int[9];
         static readonly int[,] WinConditions = new int[8,3] {{0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}};
+        static readonly int[,] TwoOfThreePositions = new int[3, 2] {{0,1},{1,2},{2,0}};
         int Turn_Count = 0;
         string Algorithm = "Minimax";
         bool AIFirstTurn = true;
@@ -178,32 +179,15 @@ namespace TicTacToe
             int IndexOfZero = -1;
             for (int i = 0; i < 8; i++)
             {
-                if (boardState[WinConditions[i, 0]] == -1 &&  boardState[WinConditions[i, 1]] == -1 && boardState[WinConditions[i, 1]] != 0)
+                for (int j = 0; j < 3; j++)
                 {
-                    for (int j = 0; i < 3; i++)
+                    if (boardState[WinConditions[i, TwoOfThreePositions[j,0]]] == -1 && boardState[WinConditions[i, TwoOfThreePositions[j, 1]]]
+                        == -1 && boardState[WinConditions[i, TwoOfThreePositions[j, 1]]] != 0)
                     {
-                        if (boardState[WinConditions[i, j]] == 0) { IndexOfZero = WinConditions[i, j]; }
-                    }
-                }
-                else if (boardState[WinConditions[i, 1]] == -1 && boardState[WinConditions[i, 2]] == -1 && boardState[WinConditions[i, 1]] != 0)
-                {
-                    for (int j = 0; i < 3; i++)
-                    {
-                        if (boardState[WinConditions[i, j]] == 0) { IndexOfZero = WinConditions[i, j]; }
-                    }
-                }
-                else if (boardState[WinConditions[i, 2]] == -1 && boardState[WinConditions[i, 0]] == -1 && boardState[WinConditions[i, 2]] != 0)
-                {
-                    for (int j = 0; i < 3; i++)
-                    {
-                        if (boardState[WinConditions[i, j]] == 0) { IndexOfZero = WinConditions[i, j]; }
-                    }
-                }
-                else if (boardState[WinConditions[i, 2]] == -1 && boardState[WinConditions[i, 0]] == -1 && boardState[WinConditions[i, 2]] != 0)
-                {
-                    for (int j = 0; i < 3; i++)
-                    {
-                        if (boardState[WinConditions[i, j]] == 0) { IndexOfZero = WinConditions[i, j]; }
+                        for (int k = 0; k < 3; k++)
+                        {
+                            if (boardState[WinConditions[i, k]] == 0) { IndexOfZero = WinConditions[i, k]; }
+                        }
                     }
                 }
             }
@@ -274,7 +258,7 @@ namespace TicTacToe
             }
         }
 
-        private void changeAlgorithm(object sender, EventArgs e)
+        private void ChangeAlgorithm(object sender, EventArgs e)
         {
             ToolStripMenuItem m = (ToolStripMenuItem)sender;
             string firstChar = m.Name.Substring(0, 1);

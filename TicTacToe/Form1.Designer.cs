@@ -91,14 +91,14 @@
             this.miniMaxToolStripMenuItem.Name = "miniMaxToolStripMenuItem";
             this.miniMaxToolStripMenuItem.Size = new System.Drawing.Size(251, 34);
             this.miniMaxToolStripMenuItem.Text = "MiniMax (default)";
-            this.miniMaxToolStripMenuItem.Click += new System.EventHandler(this.changeAlgorithm);
+            this.miniMaxToolStripMenuItem.Click += new System.EventHandler(this.ChangeAlgorithm);
             // 
             // randomToolStripMenuItem
             // 
             this.randomToolStripMenuItem.Name = "randomToolStripMenuItem";
             this.randomToolStripMenuItem.Size = new System.Drawing.Size(251, 34);
             this.randomToolStripMenuItem.Text = "Random";
-            this.randomToolStripMenuItem.Click += new System.EventHandler(this.changeAlgorithm);
+            this.randomToolStripMenuItem.Click += new System.EventHandler(this.ChangeAlgorithm);
             // 
             // aboutToolStripMenuItem
             // 
